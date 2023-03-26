@@ -6,10 +6,7 @@ TASKS = []
 
 @app.route("/", methods=['GET','POST'])
 def index():
-    if request.method == 'POST':
-        if 'action' not in request.form:
-            print(request.method)
-        
+    if request.method == 'POST':        
         if request.form['action'] == 'add_new_task':
             TASKS.append(request.form['new_task'])
         
