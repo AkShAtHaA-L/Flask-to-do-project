@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>To-Do Application</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% include 'bootstrap.html' %}
+    </head>
+    <body>
+        <div class="row justify-content-center pt-lg-5 text-center">
+            <h1> To-Do List</h1>
+            <table class="table table-bordered table table-responsive" style="width: 25%;">
+                <tr>
+                    <td class="col-8">
+                        <button type="button" class="btn btn-lg form-control btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#loginmodal">
+                            Login
+                        </button>
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td class="col-8">
+                        <button type="button" class="btn btn-lg form-control btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#registermodal">
+                            Register
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            {% include 'login.html' %}
+            {% include 'register.html' %}
+        </div>
+    </body>
+</html>
