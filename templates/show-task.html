@@ -1,7 +1,52 @@
-{% for task in tasks %}
-<tr>
-    <td>
-        {{task}}
-    </td>
-</tr>
-{% endfor %}
+<form id="all_action_form" action="" method="post">
+<div class="row justify-content-center pt-lg-5">
+    <table class="table table-bordered table table-responsive" style="width: 50%;">
+        <thead>
+            <tr>
+                <th scope="col">Task</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td class="col-8">
+                    {{ task }}
+                </td>
+                <td>
+                    <input type="hidden" name="task_id" value="{{ loop.index0 }}">
+                    <button class="btn" type="submit" name="action" value="Completed"><i class="fa fa-solid fa-check"></i></button>
+                    
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edittask"><i class="fa fa-solid fa-pencil"></i></button>
+                    <!-- The Modal -->
+                        <div class="modal" id="edittask">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                            
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                    <h4 class="modal-title">Edit this task</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                            
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                    <input type="text" name="new_task" value="{{task}}" size="35px">
+                                    </div>
+                            
+                                    <!-- Modal footer -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary" name="action" value="edited_task">Edit this task</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <button class="btn" type="submit" name="action" value="Delete"><i class="fa fa-solid fa-trash"></i></button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</form>

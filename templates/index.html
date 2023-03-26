@@ -8,18 +8,9 @@
         {% include 'bootstrap.html' %}
     </head>
     <body>
-        <div class="col text-center">
+        <div class="col text-center mt-2">
             <h1 class="font-weight-bold">Akshatha's To-Do List</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Task</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% include 'show-task.html' %}
-                </tbody>
-            </table>
+            {% include 'show-task.html' %}
             {% include 'add-task.html' %}
         </div>
     </body>
