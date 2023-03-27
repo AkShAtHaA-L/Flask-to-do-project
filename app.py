@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, abort
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 
 app = Flask(__name__)
@@ -27,23 +27,16 @@ def action_tasks_by_id(id):
         cur.execute(insert_task, (new_task,id,))
         conn.commit()
     
-    elif request.form['action'] == "Delete":
-        #delete from database
-        task_id = int(request.form['task_id'])
-        delete_query = f"DELETE from TO_DO_TASKS where TASK_ID={task_id} AND USER_ID={id}"
-        cur.execute(delete_query)
-        conn.commit()
-        
-    elif request.form['action'] == 'Completed':
-        #strike-through or delete
-        task_id = int(request.form['task_id'])
+    elif request.form['action'] == 'Completed':        
+        #delete
+        task_id = request.form['task_id']
         complete_query = f"DELETE from TO_DO_TASKS where TASK_ID={task_id} AND USER_ID={id}"
         cur.execute(complete_query)
         conn.commit()
         
     elif request.form['action'] == "edited_task":
         #update the task
-        task_id = int(request.form['task_id'])
+        task_id = request.form['task_id']
         new_task = request.form['new_task']
         update_query = f"UPDATE TO_DO_TASKS SET TASK_NAME='{new_task}' where TASK_ID={task_id} AND USER_ID={id}"
         cur.execute(update_query)

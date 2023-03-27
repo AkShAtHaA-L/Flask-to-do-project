@@ -1,4 +1,3 @@
-<form id="all_action_form" action="" method="post">
 <div class="row justify-content-center pt-lg-5">
     <table class="table table-bordered table table-responsive" style="width: 50%;">
         <thead>
@@ -9,17 +8,17 @@
         </thead>
         <tbody>
             {% for task in tasks %}
+            <form id="row_action_form" action="" method="post">
             <tr>
                 <td class="col-8">
                     {{ task[1] }}
                 </td>
                 <td>
-                    <input type="hidden" name="task_id" value={{ task[0] }}>
+                    <input type="hidden" name="task_id" value="{{ task[0] }}" />
                     <button class="btn" type="submit" name="action" value="Completed"><i class="fa fa-solid fa-check"></i></button>
-                    
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edittask"><i class="fa fa-solid fa-pencil"></i></button>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#edittask{{task[0]}}"><i class="fa fa-solid fa-pencil"></i></button>
                     <!-- The Modal -->
-                        <div class="modal" id="edittask">
+                        <div class="modal" id="edittask{{task[0]}}">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                             
@@ -42,11 +41,10 @@
                                 </div>
                             </div>
                         </div>
-                    <button class="btn" type="submit" name="action" value="Delete"><i class="fa fa-solid fa-trash"></i></button>
                 </td>
             </tr>
+            </form>
             {% endfor %}
         </tbody>
     </table>
 </div>
-</form>
