@@ -3,41 +3,18 @@ import sqlite3
 
 app = Flask(__name__)
 
-TASKS = []
-
-@app.route("/tasks", methods=['GET','POST'])
-def index():
-    if request.method == 'POST':        
-        if request.form['action'] == 'add_new_task':
-            TASKS.append(request.form['new_task'])
-        
-        else:
-            task_id = int(request.form['task_id'])
-            if request.form['action'] == 'Completed':
-                del TASKS[task_id]
-            
-            elif request.form['action'] == "Delete":
-                del TASKS[task_id]
-            
-            elif request.form['action'] == "edited_task":
-                task_id = int(request.form['task_id'])
-                new_task = request.form['new_task']
-
-                TASKS[task_id] = new_task
-        
-        return redirect(url_for('index'))
-
 @app.route("/tasks/<int:id>", methods=['GET'])
 def get_tasks_by_id(id):
     conn = sqlite3.connect('todo-database.db')
     cur = conn.cursor()
 
     get_query = f"SELECT * from TO_DO_TASKS where USER_ID='{id}'"
+    get_user = f"SELECT USERNAME from TO_DO_USERS where ID='{id}'"
+    user = cur.execute(get_user).fetchone()
     tasks = cur.execute(get_query).fetchall()
-    print(tasks)
     conn.close()
     
-    return render_template('index.html', tasks=tasks)
+    return render_template('index.html', tasks=tasks, user=user)
 
 @app.route("/tasks/<int:id>", methods=['POST'])
 def action_tasks_by_id(id):
@@ -51,14 +28,27 @@ def action_tasks_by_id(id):
         conn.commit()
     
     elif request.form['action'] == "Delete":
-        pass
         #delete from database
+        task_id = int(request.form['task_id'])
+        delete_query = f"DELETE from TO_DO_TASKS where TASK_ID={task_id} AND USER_ID={id}"
+        cur.execute(delete_query)
+        conn.commit()
+        
     elif request.form['action'] == 'Completed':
-        pass
         #strike-through or delete
+        task_id = int(request.form['task_id'])
+        complete_query = f"DELETE from TO_DO_TASKS where TASK_ID={task_id} AND USER_ID={id}"
+        cur.execute(complete_query)
+        conn.commit()
+        
     elif request.form['action'] == "edited_task":
-        pass
         #update the task
+        task_id = int(request.form['task_id'])
+        new_task = request.form['new_task']
+        update_query = f"UPDATE TO_DO_TASKS SET TASK_NAME='{new_task}' where TASK_ID={task_id} AND USER_ID={id}"
+        cur.execute(update_query)
+        conn.commit()
+        
     
     conn.close()
     return redirect(url_for('get_tasks_by_id', id=id))
@@ -81,7 +71,8 @@ def home_page():
             if not row:
                 return render_template('message.html', message="USER NOT FOUND!! Please register first.")
             else:
-                return redirect(url_for('get_tasks_by_id'))
+                id=row[0]
+                return redirect(url_for('get_tasks_by_id', id=id))
         
         elif request.form['action'] == "register_into":
             user_name = request.form['user_name']
